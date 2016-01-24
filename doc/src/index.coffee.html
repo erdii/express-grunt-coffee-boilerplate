@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>index.coffee</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <link rel="stylesheet" media="all" href="../doc-style.css" />
+  <script src="../doc-filelist.js"></script>
+  <script>
+    var relativeDir = "../", thisFile = "src\\index.coffee", defaultSidebar = true;
+  </script>
+  <script src="../doc-script.js"></script>
+</head>
+<body>
+  <div id="sidebar_wrapper">
+    <div id="sidebar_switch">
+      <span class="tree">Files</span>
+      <span class="headings">Headings</span>
+    </div>
+    <div id="tree"></div>
+    <div id="headings">
+    </div>
+  </div>
+  <div id="sidebar-toggle"></div>
+  <div id="container"><div class="background highlight"></div>
+<table cellpadding="0" cellspacing="0">
+  <tbody>
+      <tr>
+        <td class="docs">
+          <h1>index.coffee</h1>
+        </td>
+        <td class="code highlight"></td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-1" id="section-1">&#182;</a>
+</div>
+<p>npm module imports</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre><span class="nv">bodyParser = </span><span class="nx">require</span> <span class="s">&quot;body-parser&quot;</span>
+<span class="nv">express = </span><span class="nx">require</span> <span class="s">&quot;express&quot;</span>
+<span class="nv">morgan = </span><span class="nx">require</span> <span class="s">&quot;morgan&quot;</span>
+<span class="nv">walker = </span><span class="nx">require</span> <span class="s">&quot;folder-walker&quot;</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-2" id="section-2">&#182;</a>
+</div>
+<p>internal module imports</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="nv">path = </span><span class="nx">require</span> <span class="s">&quot;path&quot;</span>
+<span class="nv">utils = </span><span class="nx">require</span> <span class="s">&quot;./lib/utils&quot;</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-3" id="section-3">&#182;</a>
+</div>
+<p>load package.json</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="nv">pkg = </span><span class="nx">require</span><span class="p">(</span> <span class="s">&quot;../package.json&quot;</span> <span class="p">)</span>
+
+<span class="k">class</span> <span class="nx">Index</span> <span class="k">extends</span> <span class="nx">require</span> <span class="s">&quot;./lib/base&quot;</span>
+  <span class="nv">constructor: </span><span class="p">()</span> <span class="nf">-&gt;</span>
+    <span class="k">super</span>
+
+    <span class="vi">@xconf = </span><span class="nx">@config</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s">&quot;express&quot;</span><span class="p">)</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-4" id="section-4">&#182;</a>
+</div>
+<p>create express app</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="vi">@app = </span><span class="nx">express</span><span class="p">()</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-5" id="section-5">&#182;</a>
+</div>
+<p>configure express</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="nx">@configureExpress</span><span class="p">()</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-6" id="section-6">&#182;</a>
+</div>
+<p>middlewares</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="nx">@loadMiddlewares</span><span class="p">()</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-7" id="section-7">&#182;</a>
+</div>
+<p>ping for monitoring</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="nx">@loadPingRoute</span><span class="p">()</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-8" id="section-8">&#182;</a>
+</div>
+<p>start the server</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="nx">@startSever</span><span class="p">()</span>
+    <span class="k">return</span>
+
+
+  <span class="nv">configureExpress: </span><span class="p">()</span> <span class="o">=&gt;</span>
+    <span class="nx">@app</span><span class="p">.</span><span class="nx">set</span> <span class="s">&quot;title&quot;</span><span class="p">,</span> <span class="nx">pkg</span><span class="p">.</span><span class="nx">name</span>
+    <span class="nx">@app</span><span class="p">.</span><span class="nx">enable</span> <span class="s">&quot;trust proxy&quot;</span>
+    <span class="nx">@app</span><span class="p">.</span><span class="nx">disable</span> <span class="s">&quot;x-powered-by&quot;</span>
+    <span class="k">return</span>
+
+
+  <span class="nv">loadMiddlewares: </span><span class="p">()</span> <span class="o">=&gt;</span>
+    <span class="nx">@app</span><span class="p">.</span><span class="nx">use</span> <span class="nx">bodyParser</span><span class="p">.</span><span class="nx">json</span><span class="p">()</span>
+    <span class="nx">@app</span><span class="p">.</span><span class="nx">use</span> <span class="nx">morgan</span><span class="p">(</span> <span class="nx">@xconf</span><span class="p">.</span><span class="nx">logger</span> <span class="p">)</span>
+    <span class="k">return</span>
+
+
+  <span class="nv">loadPingRoute: </span><span class="p">()</span> <span class="o">=&gt;</span>
+    <span class="nx">@app</span><span class="p">.</span><span class="nx">get</span> <span class="s">&quot;/ping&quot;</span><span class="p">,</span> <span class="nf">( req, res ) -&gt;</span>
+      <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span>
+        <span class="nv">timestamp: </span><span class="nb">Date</span><span class="p">.</span><span class="nx">now</span><span class="p">()</span>
+      <span class="p">)</span>
+      <span class="k">return</span>
+    <span class="k">return</span>
+
+
+  <span class="nv">loadRoutes: </span><span class="p">()</span> <span class="o">=&gt;</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-9" id="section-9">&#182;</a>
+</div>
+<p>scan all routes and load them</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="nv">routeStream = </span><span class="nx">walker</span> <span class="nx">path</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span> <span class="nx">__dirname</span><span class="p">,</span> <span class="s">&quot;./routes&quot;</span> <span class="p">)</span>
+
+    <span class="nx">routeStream</span><span class="p">.</span><span class="nx">on</span> <span class="s">&quot;data&quot;</span><span class="p">,</span> <span class="nf">( data ) -&gt;</span>
+      <span class="nv">ext = </span><span class="nx">path</span><span class="p">.</span><span class="nx">extname</span><span class="p">(</span> <span class="nx">data</span><span class="p">.</span><span class="nx">filepath</span> <span class="p">)</span>
+
+      <span class="k">if</span> <span class="nx">path</span><span class="p">.</span><span class="nx">extname</span><span class="p">(</span> <span class="nx">data</span><span class="p">.</span><span class="nx">filepath</span> <span class="p">)</span> <span class="o">is</span> <span class="s">&quot;.js&quot;</span>
+        <span class="nv">basename = </span><span class="nx">path</span><span class="p">.</span><span class="nx">basename</span><span class="p">(</span> <span class="nx">data</span><span class="p">.</span><span class="nx">filepath</span><span class="p">,</span> <span class="nx">ext</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="k">if</span> <span class="nx">basename</span> <span class="o">is</span> <span class="s">&quot;ping&quot;</span> <span class="c1"># because &quot;/ping&quot; is already used</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-10" id="section-10">&#182;</a>
+</div>
+<p>import the route and mount it</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+        <span class="nx">require</span><span class="p">(</span> <span class="nx">data</span><span class="p">.</span><span class="nx">filepath</span> <span class="p">)(</span> <span class="nx">@app</span><span class="p">,</span> <span class="s">&quot;/&quot;</span> <span class="o">+</span> <span class="nx">basename</span> <span class="p">)</span>
+      <span class="k">return</span>
+    <span class="k">return</span>
+
+
+  <span class="nv">startSever: </span><span class="p">()</span> <span class="o">=&gt;</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-11" id="section-11">&#182;</a>
+</div>
+<p>start the server</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="nx">@app</span><span class="p">.</span><span class="nx">listen</span> <span class="nx">@xconf</span><span class="p">.</span><span class="nx">port</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span>
+      <span class="nx">@log</span> <span class="s">&quot;</span><span class="si">#{</span><span class="nx">pkg</span><span class="p">.</span><span class="nx">name</span><span class="si">}</span><span class="s"> listening on port </span><span class="si">#{</span><span class="nx">@xconf</span><span class="p">.</span><span class="nx">port</span><span class="si">}</span><span class="s">.&quot;</span>
+      <span class="k">return</span>
+    <span class="k">return</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-12" id="section-12">&#182;</a>
+</div>
+<p>kick it off!</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="k">new</span> <span class="nx">Index</span><span class="p">()</span>
+</pre></div>
+        </td>
+      </tr>
+  </tbody>
+</table>
+  </div>
+</body>
+</html>
