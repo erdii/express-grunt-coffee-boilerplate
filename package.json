@@ -1,0 +1,33 @@
+{
+  "name": "pubkeystore.js",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "1.14.2",
+    "convict": "1.0.2",
+    "debug": "2.2.0",
+    "express": "4.13.4",
+    "folder-walker": "1.2.1",
+    "md5": "2.0.0",
+    "morgan": "1.6.1",
+    "redis": "2.4.2"
+  },
+  "devDependencies": {
+    "coffeelint": "1.14.2",
+    "grunt": "0.4.5",
+    "grunt-coffeelint": "0.0.13",
+    "grunt-contrib-clean": "0.7.0",
+    "grunt-contrib-coffee": "0.13.0",
+    "grunt-contrib-watch": "0.6.1",
+    "grunt-docker": "0.0.10",
+    "grunt-mocha-cli": "2.0.0",
+    "grunt-newer": "1.1.1",
+    "should": "8.2.0"
+  }
+}
