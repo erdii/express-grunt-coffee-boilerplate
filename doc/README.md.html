@@ -19,214 +19,21 @@
     <div id="tree"></div>
     <div id="headings">
       <div class="heading h1">
-        <a href="#pubkeystore.js">PubKeyStore.js</a>
-      </div>
-      <div class="heading h2">
-        <a href="#setup%20your%20dev%20environment">Setup your dev environment</a>
-      </div>
-      <div class="heading h2">
-        <a href="#architecture">Architecture</a>
-      </div>
-      <div class="heading h2">
-        <a href="#api">API</a>
-      </div>
-      <div class="heading h3">
-        <a href="#authentication">authentication</a>
-      </div>
-      <div class="heading h3">
-        <a href="#store%20a%20new%20key">store a new key</a>
-      </div>
-      <div class="heading h3">
-        <a href="#revoke%20a%20key">revoke a key</a>
-      </div>
-      <div class="heading h3">
-        <a href="#query%20a%20key%20status">query a key status</a>
-      </div>
-      <div class="heading h3">
-        <a href="#query%20all%20keys%20with%20a%20higher%20seclevel%20than%20x">query all keys with a higher seclevel than x</a>
+        <a href="#express-grunt-coffee-boilerplate">express-grunt-coffee-boilerplate</a>
       </div>
     </div>
   </div>
   <div id="sidebar-toggle"></div>
   <div id="container"><div class="docs markdown">
-<div class="pilwrap" id="pubkeystore.js">
+<div class="pilwrap" id="express-grunt-coffee-boilerplate">
   <h1>
-    <a href="#pubkeystore.js" name="pubkeystore.js" class="pilcrow">&#182;</a>
-    PubKeyStore.js
+    <a href="#express-grunt-coffee-boilerplate" name="express-grunt-coffee-boilerplate" class="pilcrow">&#182;</a>
+    express-grunt-coffee-boilerplate
   </h1>
 </div>
 
 
-<p>A node.js App Server for storing your ssh Public Keys to make it easier maintaining your multiple device keys.</p>
-
-
-<div class="pilwrap" id="setup%20your%20dev%20environment">
-  <h2>
-    <a href="#setup%20your%20dev%20environment" name="setup%20your%20dev%20environment" class="pilcrow">&#182;</a>
-    Setup your dev environment
-  </h2>
-</div>
-
-
-<ul>
-<li>You need a node 4.2 api-compatible version.</li>
-<li><code>npm install</code> all dependencies</li>
-<li>Start the server by typing <code>DEBUG=pubkey* node .</code></li>
-</ul>
-
-
-<div class="pilwrap" id="architecture">
-  <h2>
-    <a href="#architecture" name="architecture" class="pilcrow">&#182;</a>
-    Architecture
-  </h2>
-</div>
-
-
-<p>the keys are stored in a redis database hash per devicekey:</p>
-
-<div class='highlight'><pre><code language=''>home-windows10:
-    pubkey: ssh-ed25519 XxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXx user@home-windows10
-    revoked: false
-    added: 1453668035634
-    seclevel: 10
-</code></pre></div>
-
-<p>It's worth mentioning that the Timestamp in <code>added</code> is an <a href="http://www.ecma-international.org/ecma-262/5.1/#sec-15.9.1.1">EcmaScript Timestamp</a>. ES measures Time in milliseconds sine 01 January, 1970 UTC.</p>
-
-<p>The seclevel can be used to query the store for different security environments (higher seclevel means the device is more trusted).</p>
-
-
-<div class="pilwrap" id="api">
-  <h2>
-    <a href="#api" name="api" class="pilcrow">&#182;</a>
-    API
-  </h2>
-</div>
-
-
-
-<div class="pilwrap" id="authentication">
-  <h3>
-    <a href="#authentication" name="authentication" class="pilcrow">&#182;</a>
-    authentication
-  </h3>
-</div>
-
-
-<p>all requests tagged with <strong>AUTH</strong> have to include 3 query variables:</p>
-
-<ul>
-<li><code>uid</code>: the clients userid</li>
-<li><code>ts</code>: the request timestamp</li>
-<li><code>token</code>: md5( timestamp + ":" + userid + ":" + usersecret )</li>
-</ul>
-
-
-<div class="pilwrap" id="store%20a%20new%20key">
-  <h3>
-    <a href="#store%20a%20new%20key" name="store%20a%20new%20key" class="pilcrow">&#182;</a>
-    store a new key
-  </h3>
-</div>
-
-
-<p><strong>AUTH</strong></p>
-
-<p>POST /store?uid={uid}&amp;ts={ts}&amp;token={token}</p>
-
-<div class='highlight'><pre><code language=''>POST /store?uid=user&amp;ts=1453668035634&amp;token=5e6d399f82271e45c7e33193ca4136db
-Content-Type: application/json
-
-{
-    "pubkey": "ssh-ed25519 XxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXx user@home-windows10"
-    "device": "home-windows10"
-    "seclevel": 10
-}
-
-Answer:
-Content-Type: application/json
-{
-    "id": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
-}
-</code></pre></div>
-
-
-<div class="pilwrap" id="revoke%20a%20key">
-  <h3>
-    <a href="#revoke%20a%20key" name="revoke%20a%20key" class="pilcrow">&#182;</a>
-    revoke a key
-  </h3>
-</div>
-
-
-<p><strong>AUTH</strong></p>
-
-<p>POST /revoke?uid={uid}&amp;ts={ts}&amp;token={token}</p>
-
-<div class='highlight'><pre><code language=''>POST /revoke?uid=user&amp;ts=1453668035634&amp;token=5e6d399f82271e45c7e33193ca4136db
-Content-Type: application/json
-
-{
-    "id": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
-}
-
-Answer:
-Content-Type: application/json
-{
-    "msg": "ok"
-}
-</code></pre></div>
-
-
-<div class="pilwrap" id="query%20a%20key%20status">
-  <h3>
-    <a href="#query%20a%20key%20status" name="query%20a%20key%20status" class="pilcrow">&#182;</a>
-    query a key status
-  </h3>
-</div>
-
-
-<p>GET /get/by/id/:id or <br />
-GET /get/by/device/:device or <br />
-POST /get/by/pubkey</p>
-
-<div class='highlight'><pre><code language=''>GET /get/by/XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-
-Answer:
-Content-Type: application/json
-{
-    "device": "home-windows10"
-    "id": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
-    "pubkey": "ssh-ed25519 XxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXx user@home-windows10"
-    "revoked": false
-    "added": 1453668035634
-    "seclevel": 10
-}
-</code></pre></div>
-
-
-<div class="pilwrap" id="query%20all%20keys%20with%20a%20higher%20seclevel%20than%20x">
-  <h3>
-    <a href="#query%20all%20keys%20with%20a%20higher%20seclevel%20than%20x" name="query%20all%20keys%20with%20a%20higher%20seclevel%20than%20x" class="pilcrow">&#182;</a>
-    query all keys with a higher seclevel than x
-  </h3>
-</div>
-
-
-<p>GET /get/by/sec/:x</p>
-
-<div class='highlight'><pre><code language=''>GET /get/by/sec/5
-
-Answer:
-Content-Type: application/json
-{
-    "length": 1
-    "keys": [
-        { key information... }
-    ]
-}
-</code></pre></div></div>
+<p>yet missing</p></div>
   </div>
 </body>
 </html>
